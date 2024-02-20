@@ -22,27 +22,39 @@ $(document).ready(function () {
     });
 });
 
+var formatoEmailCorrecto = false;
+var camposCompletos = false;
 
+// Definir la función de validación del formulario
 function validarFormulario() {
     // Obtener los valores de los campos
-    var name = document.getElementById('name').value.trim();
-    var email = document.getElementById('email').value.trim();
-    var phone = document.getElementById('phone').value.trim();
-    var message = document.getElementById('message').value.trim();
+    var name = $('#name').val().trim();
+    var email = $('#email').val().trim();
+    var phone = $('#phone').val().trim();
+    var message = $('#message').val().trim();
+    
 
     // Verificar que todos los campos requeridos estén completos
-    var camposCompletos = name !== '' && email !== '' && phone !== '' && message !== '';
+    if(name !== '' && email !== '' && phone !== '' && message !== ''){
+        camposCompletos = true;
+    }else{
+        camposCompletos = false;
+    }
 
     // Verificar el formato del email usando una expresión regular simple
-    var formatoEmailCorrecto = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    formatoEmailCorrecto = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-    // Habilitar o deshabilitar el botón de enviar según la validación
-    var botonEnviar = document.getElementById('submitButton');
-    botonEnviar.disabled = !(camposCompletos && formatoEmailCorrecto);
+    if(camposCompletos && formatoEmailCorrecto){
+        $('#submitButton').prop('disabled', false);
+        return true;
+    }else{
+        $('#submitButton').prop('disabled', true);
+        return false;
+    }
 }
 
-// Escuchar eventos de cambio en los campos del formulario
-document.getElementById('name').addEventListener('input', validarFormulario);
-document.getElementById('email').addEventListener('input', validarFormulario);
-document.getElementById('phone').addEventListener('input', validarFormulario);
-document.getElementById('message').addEventListener('input', validarFormulario);
+$(document).ready(function () {
+    //cargo disabled por defecto
+    $('#submitButton').prop('disabled', true);
+});
+
